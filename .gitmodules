@@ -1,0 +1,6 @@
+[submodule "external/terraform"]
+	path = vendor/terraform
+	url = https://github.com/hashicorp/terraform
+[submodule "external/go-plugin"]
+	path = vendor/go-plugin
+	url = https://github.com/hashicorp/go-plugin
