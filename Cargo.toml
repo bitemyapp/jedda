@@ -1,0 +1,6 @@
+[workspace]
+
+members = [
+    "jedda",
+    "jedda_derive",
+]
