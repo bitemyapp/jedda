@@ -1,13 +1,11 @@
 use rcgen;
 
-use crate::error::Result;
+use crate::error;
 
 const PROTOCOL_VERSION: u8 = 1;
 
 // Usually PROTOCOL_VERSION
-async fn connection_info(writer: &mut impl std::io::Write, protocol_version: u8, hostname: &str, port: u32, server_cert: rcgen::Certificate) -> Result<()> {
-    use std::io::Write;
-
+async fn connection_info(writer: &mut impl std::io::Write, protocol_version: u8, hostname: &str, port: u32, server_cert: rcgen::Certificate) -> error::Result<()> {
     writeln!(
         writer,
         // "localhost:10000"
@@ -19,7 +17,7 @@ async fn connection_info(writer: &mut impl std::io::Write, protocol_version: u8,
             server_cert.serialize_der().unwrap(),
             base64::STANDARD_NO_PAD
         )
-    );
+    ).map_err(|_| error::Error::ConnectionNegotiation("Failed to write connection information to Writer".to_string()))?;
     Ok(())
 }
 
@@ -31,6 +29,6 @@ mod tests {
     #[tokio::test]
     async fn outputs_connection_info_to_stdio() {
         let mut stdout = std::io::stdout();
-        connection_info(&mut stdout, PROTOCOL_VERSION, todo!()).await.unwrap();
+        connection_info(&mut stdout, PROTOCOL_VERSION, "localhost", 12000, todo!()).await.unwrap();
     }
 }
