@@ -1,3 +1,7 @@
+pub mod api;
+pub mod cli;
+pub mod error;
+
 #[cfg(test)]
 mod tests {
     #[test]
