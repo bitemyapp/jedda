@@ -1,6 +1,7 @@
 pub mod api;
 pub mod cli;
 pub mod error;
+pub mod terraform;
 
 #[cfg(test)]
 mod tests {
