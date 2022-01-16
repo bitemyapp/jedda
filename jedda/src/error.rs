@@ -18,7 +18,7 @@ pub trait IntoJeddaError<T> {
             S: AsRef<str>,
             Self: std::marker::Sized,
     {
-        self.jedda_error(Error::ConnectionNegotiation(message.to_string()))
+        self.jedda_error(Error::ConnectionNegotiation(message.as_ref().to_owned()))
     }
 }
 
@@ -26,7 +26,7 @@ impl<T, E: std::fmt::Debug> IntoJeddaError<T> for core::result::Result<T, E> {
     fn jedda_error(
         self,
         error_val: Error
-    ) -> core::result::Result<T, actix_web::Error> {
+    ) -> core::result::Result<T, Error> {
         match self {
             Ok(val) => Ok(val),
             Err(err) => {
